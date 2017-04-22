@@ -1,0 +1,99 @@
+
+/**
+ * Fix user-agent
+ */
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0.5em !important;
+  padding: 0;
+}
+
+/**
+ * Canvas
+ */
+
+.whiteboard {
+  height: 480px;
+  width: 640px;
+  /*position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;*/
+  border: 1px solid black;
+}
+
+.center-toolbar {
+  text-align: center;
+}
+
+.canvas-container {
+  margin: 0 auto;
+}
+
+.itConfirmDiv {
+  text-align: right;
+}
+
+/*.colors {
+  position: fixed;
+}*/
+
+.color {
+  /*display: inline-block;
+  height: 48px;
+  width: 48px;*/
+  margin: 8px 15px 8px 15px;
+  padding: 5px;
+  border-radius: 10px !important;
+  text-align: center;
+  width: 80%;
+}
+
+.color.color-black { background-color: black; }
+.color.color-red { background-color: red; }
+.color.color-green { background-color: green; }
+.color.color-blue { background-color: blue; }
+.color.color-yellow { background-color: yellow; }
+
+.modal-dialog {
+  top: 10em;
+}
+
+textarea {
+  resize: none;
+}
+
+.modalOnLaunch-body>table>tbody>tr>td {
+  border-top: 0px !important;
+  text-align: center;
+}
+
+.modalOnLaunch-body td:hover:not(.isChecked) {
+  background-color: #F8F8F8;
+}
+
+.modalOnLaunch-body>table {
+  width: 80% !important;
+  margin: auto;
+}
+
+.modalOnLaunch-body {
+  text-align: center;
+}
+
+.isChecked {
+  background-color: #F0F0F0;
+}
+
+#modalUpload .modal-dialog {
+  max-width: 400px;
+}
+
+#modalLoad .modal-dialog {
+  max-width: 500px;
+}

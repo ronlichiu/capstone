@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Collaborative Platform</title>
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/fabric.min.js"></script>
+  <script src="js/pdf.js"></script>
+  <script src="js/jspdf.debug.js"></script>
+
+</head>
+<body>
+
+
+  <div class="container">
+
+    <div class="row">
+      <div class="col-md-5 col-md-offset-2 col-sm-5 col-sm-offset-1">
+        <button type="button" class="btn btn-default" id="exportBtn"><span class="glyphicon glyphicon-download-alt"></span></button>
+      </div>
+      <div class="col-md-5 col-sm-5">
+        <form class="form-inline pull-right">
+            <button type="button" class="btn btn-default" id="previousPageBtn" disabled><span class="glyphicon glyphicon-triangle-left"></span></button>
+            <select class="form-control" id="pageNav" style="width:auto">
+              <option value="1">Page 1</option>
+            </select>
+            <button type="button" class="btn btn-default" id="nextPageBtn" disabled><span class="glyphicon glyphicon-triangle-right"></span></button>
+            &nbsp;&nbsp;
+            <button type="button" class="btn btn-default" id="addPageBtn"><span class="glyphicon glyphicon-plus"></span></button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Spacing -->
+    <div class="row">
+      <div class="col-md-12 col-sm-12">
+        <p>&nbsp;</p>
+      </div>
+    </div>
+    <!-- Spacing -->
+
+    <div class="whiteboard-container col-md-12 col-sm-12 center-toolbar">
+      <canvas class="whiteboard" id="whiteboard"></canvas>
+    </div>
+
+    <!-- Spacing -->
+    <div class="row">
+      <div class="col-md-12 col-sm-12">
+        <p>&nbsp;</p>
+      </div>
+    </div>
+    <!-- Spacing -->
+
+    <!-- Toolbar for drawing canvas -->
+    <div class="row">
+      <div class="canvas-toolbar col-md-12 col-sm-12 center-toolbar">
+        <div class="btn-group" role="group">
+          <!--button type="button" class="btn btn-default" id="document"><span class="glyphicon glyphicon-file"></span></button-->
+
+          <div class="btn-group dropup" role="group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-tint" id="colorDropdown" style="color:black"></span> <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li><button type="button" class="btn color color-black">&nbsp;</button></li>
+              <li><button type="button" class="btn color color-red">&nbsp;</button></li>
+              <li><button type="button" class="btn color color-green">&nbsp;</button></li>
+              <li><button type="button" class="btn color color-blue">&nbsp;</button></li>
+              <li><button type="button" class="btn color color-yellow">&nbsp;</button></li>
+            </ul>
+          </div>
+
+          <button type="button" class="btn btn-default stateChangeBtn" id="drawing"><span class="glyphicon glyphicon-pencil"></span></button>
+
+          <button type="button" class="btn btn-default" id="insertTextBtn"><span class="glyphicon glyphicon-text-size"></span></button>
+          <!--button type="button" class="btn btn-default" data-toggle="modal" data-target="#insertTextModal" id="insertTextBtn"><span class="glyphicon glyphicon-text-size"></span></button-->
+        </div>
+      </div>
+    </div>
+    <!-- end of Toolbar for drawing canvas -->
+</div>
+
+    <!-- Modal for initialize -->
+    <div class="modal fade" id="modalOnLaunch" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Please choose one:</h4>
+          </div>
+          <div class="modal-body modalOnLaunch-body">
+            <table class="table-responsive table modal-table">
+              <tr>
+                <td><label>
+                  <img src="img/blank.png" class="img-responsive"><br>
+                  <input type="radio" name="modalOnLaunch-radio" value="blank">
+                </label></td>
+                <td><label>
+                  <img src="img/pdf.png" class="img-responsive"><br>
+                  <input type="radio" name="modalOnLaunch-radio" value="pdf">
+                </label></td>
+              </tr>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" disabled>Proceed</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal for initialize -->
+
+    <!-- Modal prompt to wait -->
+    <div class="modal fade" id="modalLoad" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Please wait for drawing canvas selection...</h4>
+          </div>
+          <div class="modal-body modalOnLaunch-body">
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped active" role="progressbar"
+              aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal prompt to wait -->
+
+    <!-- Modal upload pdf -->
+    <div class="modal fade" id="modalUpload" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Upload PDF</h4>
+          </div>
+          <div class="modal-body">
+            <input type="file" id="uploadFile" accept=".pdf">
+            <div class="alert alert-danger errField" role="alert" hidden>
+              <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+              <span class="sr-only">Error:</span>
+              Only PDF files are accepted.
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-loading-text="Processing..." disabled>Proceed</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal upload pdf -->
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/main.js"></script>
+
+    <canvas id="exporter" hidden></canvas>
+</body>
+</html>
